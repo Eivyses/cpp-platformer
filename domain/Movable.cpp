@@ -72,17 +72,7 @@ class Movable {
 				}
 			}
 			if (is_falling) {
-				bool has_floor = false;
-				auto next_fall_pos = pos_y + 1;
-				for (auto& platform : platforms) {
-					if (pos_x >= platform.first && 
-						pos_x <= platform.first + 9 &&
-						next_fall_pos == platform.second) {
-						has_floor = true;
-						break;
-					}
-				}
-				if (has_floor || next_fall_pos == 29) {
+				if (has_floor(platforms) || pos_y >= 28) {
 					is_falling = false;
 					return;
 				}
