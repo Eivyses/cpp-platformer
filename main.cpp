@@ -11,17 +11,17 @@
 constexpr const uint8_t k_width = 120;
 constexpr const uint8_t k_height = 30;
 
-bool on_update(double delta_time, Player& player) {
+bool on_update(double delta_time, Player& player, std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
     // TODO: defined cross-platform keycodes
     if (asciilibur::input::get_key_state(VK_ESCAPE)) {
         // Quit game
         return false;
     }
     if (asciilibur::input::get_key_state(VK_LEFT)) {
-        player.move_left();
+        player.move_left(platforms);
     } 
     if (asciilibur::input::get_key_state(VK_RIGHT)) {
-        player.move_right();
+        player.move_right(platforms);
     } 
     if (asciilibur::input::get_key_state(VK_UP)) {
         player.jump();
@@ -45,7 +45,7 @@ void on_draw(
     level.draw();
     // buffer.draw(asciilibur::Char::SMILE_DARK, pos, 10);
     // buffer.draw(asciilibur::Char::SMILE_LIGHT, 11, 10);
-    player.draw();
+    player.draw(level.getPlatforms());
 }
 
 int main() {
@@ -66,7 +66,7 @@ int main() {
         last_time = time_now;
 
         // Update game
-        should_run = on_update(delta_time, player);
+        should_run = on_update(delta_time, player, level1.getPlatforms());
 
         // Draw things into the buffer
         on_draw(buffer, base_pos, player, boundaries, level1);

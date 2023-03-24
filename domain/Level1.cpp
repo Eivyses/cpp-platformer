@@ -13,7 +13,7 @@ class Level1: public Level {
 				draw_platform(platform.first, platform.second);
 			}
 
-			m_buffer.draw('F', 54, 21);
+			m_buffer.draw('F', 54, 20);
 		}
 
 		std::vector<std::pair<uint64_t, uint64_t>> getPlatforms() {

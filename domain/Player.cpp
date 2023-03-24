@@ -10,15 +10,15 @@ class Player : Movable {
 		asciilibur::FrameBuffer m_buffer;
 
 	public:
-		void draw() {
-			update_jump();
+		void draw(std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
+			update_jump(platforms);
 			m_buffer.draw('@', pos_x, pos_y);
 		}
-		void move_left() {
-			Movable::move_left();
+		void move_left(std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
+			Movable::move_left(platforms);
 		}
-		void move_right() {
-			Movable::move_right();
+		void move_right(std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
+			Movable::move_right(platforms);
 		}
 
 		void jump() {
