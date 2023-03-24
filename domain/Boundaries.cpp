@@ -14,8 +14,8 @@ class Boundaries : Movable {
 	public:
 		void draw() {
 			for (int i = 0; i < MAX_WIDTH - 1; i++) {
-				m_buffer.draw('=', i, 0);
 				m_buffer.draw('=', i, 1);
+				m_buffer.draw('=', i, MAX_HEIGHT - 1);
 			}
 			for (int i = 0; i < MAX_HEIGHT; i++) {
 				m_buffer.draw('|', 0, i);

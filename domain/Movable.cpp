@@ -8,7 +8,7 @@ const uint64_t MAX_JUMP_TIME = 2;
 class Movable {
 	public:
 		uint64_t pos_x = 1;
-		uint64_t pos_y = 29;
+		uint64_t pos_y = 28;
 
 	private:
 		uint64_t jump_time = 0;
