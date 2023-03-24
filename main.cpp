@@ -7,11 +7,12 @@
 #include "domain/Boundaries.cpp"
 #include "domain/Level1.cpp"
 #include <iostream>
+#include <string>
 
 constexpr const uint8_t k_width = 120;
 constexpr const uint8_t k_height = 30;
 
-bool on_update(double delta_time, Player& player, std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
+bool on_update(double delta_time, Player& player, std::vector<std::pair<uint64_t, uint64_t>>& platforms, Config& config) {
     // TODO: defined cross-platform keycodes
     if (asciilibur::input::get_key_state(VK_ESCAPE)) {
         // Quit game
@@ -26,6 +27,9 @@ bool on_update(double delta_time, Player& player, std::vector<std::pair<uint64_t
     if (asciilibur::input::get_key_state(VK_UP)) {
         player.jump();
     }
+    //if (asciilibur::input::get_key_state(VK_DOWN)) {
+    //    config.max_jump_value += 1;
+    //}
 
     // ---- Game logic here ----
 
@@ -34,6 +38,7 @@ bool on_update(double delta_time, Player& player, std::vector<std::pair<uint64_t
 }
 
 void on_draw(
+    Config& config,
     asciilibur::FrameBuffer& buffer, 
     uint64_t pos, 
     Player& player, 
@@ -44,11 +49,31 @@ void on_draw(
     boundaries.draw();
     level.draw();
     // buffer.draw(asciilibur::Char::SMILE_DARK, pos, 10);
-    // buffer.draw(asciilibur::Char::SMILE_LIGHT, 11, 10);
-    player.draw(level.getPlatforms());
+
+    if (config.max_jump_value == 2) {
+        buffer.draw(asciilibur::Char::SMILE_LIGHT, 50, 25);
+    }
+    if (player.get_pos_x() == 50 && player.get_pos_y() == 25 && config.max_jump_value == 2) {
+        config.max_jump_value += 1;
+    }
+    if (config.max_jump_value == 3) {
+        buffer.draw(asciilibur::Char::SMILE_LIGHT, 90, 20);
+    }
+    if (player.get_pos_x() == 90 && player.get_pos_y() == 20 && config.max_jump_value == 3) {
+        config.max_jump_value += 1;
+    }
+
+    player.draw(level.getPlatforms(), config);
+
+    const std::string text = "Jump power: " + std::to_string(config.max_jump_value);
+    uint64_t text_start = 100;
+    for (int i = 0; i < text.size(); i++) {
+        buffer.draw(text[i], i + text_start, 5);
+    }
 }
 
 int main() {
+    Config config;
     asciilibur::FrameBuffer buffer(k_width, k_height);
     Player player(buffer);
     Boundaries boundaries(buffer);
@@ -66,10 +91,10 @@ int main() {
         last_time = time_now;
 
         // Update game
-        should_run = on_update(delta_time, player, level1.getPlatforms());
+        should_run = on_update(delta_time, player, level1.getPlatforms(), config);
 
         // Draw things into the buffer
-        on_draw(buffer, base_pos, player, boundaries, level1);
+        on_draw(config, buffer, base_pos, player, boundaries, level1);
 
         if (++base_pos >= k_width) {
             base_pos = 0;

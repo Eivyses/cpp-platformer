@@ -1,10 +1,9 @@
-﻿#include "Movable.cpp"
-#include "asciilibur.hpp"
+﻿#include "asciilibur.hpp"
 
 const static int64_t MAX_HEIGHT = 30;
 const static int64_t MAX_WIDTH = 120;
 
-class Boundaries : Movable {
+class Boundaries {
 	public:
 		Boundaries(const asciilibur::FrameBuffer& buffer) : m_buffer(buffer) {}
 

@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(libs/asciilibur)
 
-add_executable(cpp_platformer "main.cpp" "domain/Movable.cpp" "domain/Player.cpp" "domain/Boundaries.cpp" "domain/Level1.cpp" "domain/Level.cpp")
+add_executable(cpp_platformer "main.cpp" "domain/Movable.cpp" "domain/Player.cpp" "domain/Boundaries.cpp" "domain/Level1.cpp" "domain/Level.cpp" "domain/Config.cpp")
 target_link_libraries(cpp_platformer asciilibur)
 

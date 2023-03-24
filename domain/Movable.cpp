@@ -2,9 +2,8 @@
 
 #include <cstdint>
 #include <vector>
+#include "Config.cpp"
 
-
-const uint64_t MAX_JUMP_TIME = 2;
 
 class Movable {
 	public:
@@ -56,12 +55,12 @@ class Movable {
 			}
 		}
 
-		void update_jump(std::vector<std::pair<uint64_t, uint64_t>>& platforms) {
+		void update_jump(std::vector<std::pair<uint64_t, uint64_t>>& platforms, const Config& config) {
 			if (!is_jumping && !is_falling) {
 				return;
 			}
 			if (is_jumping) {
-				if (jump_time > MAX_JUMP_TIME) {
+				if (jump_time > config.max_jump_value) {
 					is_jumping = false;
 					is_falling = true;
 					jump_time = 0;
