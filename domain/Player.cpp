@@ -11,12 +11,17 @@ class Player : Movable {
 
 	public:
 		void draw() {
-			m_buffer.draw(asciilibur::Char::SMILE_DARK, pos_x, pos_y);
+			update_jump();
+			m_buffer.draw('@', pos_x, pos_y);
 		}
 		void move_left() {
 			Movable::move_left();
 		}
 		void move_right() {
 			Movable::move_right();
+		}
+
+		void jump() {
+			Movable::jump();
 		}
 };

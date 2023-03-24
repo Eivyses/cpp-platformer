@@ -4,6 +4,9 @@
 
 #include "asciilibur.hpp"
 #include "domain/Player.cpp"
+#include "domain/Boundaries.cpp"
+#include "domain/Level1.cpp"
+#include <iostream>
 
 constexpr const uint8_t k_width = 120;
 constexpr const uint8_t k_height = 30;
@@ -13,10 +16,15 @@ bool on_update(double delta_time, Player& player) {
     if (asciilibur::input::get_key_state(VK_ESCAPE)) {
         // Quit game
         return false;
-    } else if (asciilibur::input::get_key_state(VK_LEFT)) {
+    }
+    if (asciilibur::input::get_key_state(VK_LEFT)) {
         player.move_left();
-    } else if (asciilibur::input::get_key_state(VK_RIGHT)) {
+    } 
+    if (asciilibur::input::get_key_state(VK_RIGHT)) {
         player.move_right();
+    } 
+    if (asciilibur::input::get_key_state(VK_UP)) {
+        player.jump();
     }
 
     // ---- Game logic here ----
@@ -25,9 +33,16 @@ bool on_update(double delta_time, Player& player) {
     return true;
 }
 
-void on_draw(asciilibur::FrameBuffer& buffer, uint64_t pos, Player& player) {
+void on_draw(
+    asciilibur::FrameBuffer& buffer, 
+    uint64_t pos, 
+    Player& player, 
+    Boundaries& boundaries,
+    Level& level) {
     // Draw something into the frame buffer
     buffer.clear_buffer();
+    boundaries.draw();
+    level.draw();
     // buffer.draw(asciilibur::Char::SMILE_DARK, pos, 10);
     // buffer.draw(asciilibur::Char::SMILE_LIGHT, 11, 10);
     player.draw();
@@ -36,6 +51,8 @@ void on_draw(asciilibur::FrameBuffer& buffer, uint64_t pos, Player& player) {
 int main() {
     asciilibur::FrameBuffer buffer(k_width, k_height);
     Player player(buffer);
+    Boundaries boundaries(buffer);
+    Level1 level1(buffer);
 
     bool should_run = true;
     uint64_t last_time = asciilibur::time::get_time();
@@ -52,7 +69,7 @@ int main() {
         should_run = on_update(delta_time, player);
 
         // Draw things into the buffer
-        on_draw(buffer, base_pos, player);
+        on_draw(buffer, base_pos, player, boundaries, level1);
 
         if (++base_pos >= k_width) {
             base_pos = 0;
@@ -60,5 +77,10 @@ int main() {
 
         // Render buffer to screen
         buffer.render_buffer();
+    }
+
+    std::cout << "ARRAY:";
+    for (auto platform : level1.getPlatforms()) {
+        std::cout << platform.first << " " << platform.second << std::endl;
     }
 }
